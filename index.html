@@ -258,10 +258,22 @@ function workMessage(text){$("#workMessage").textContent=text}
 /* GitHub Pages → Apps Script → Google Sheets */
 const SUBMISSION_CONFIG={endpoint:"https://script.google.com/macros/s/AKfycbzCG-y31gupZzrqMYYg0kJoGzWyYWakarJKn7vt4qumkReT8ErEp5eXMK5_SVwvowy6oQ/exec",lessonId:"computing-system-01"};
 const configReady=Promise.resolve(SUBMISSION_CONFIG.endpoint);
+const sheetDialog=document.createElement("dialog");
+sheetDialog.setAttribute("aria-labelledby","sheetPasswordTitle");
+sheetDialog.style.cssText="border:1px solid #ddd;border-radius:16px;padding:24px;max-width:360px;width:calc(100% - 40px)";
+sheetDialog.innerHTML='<form id="sheetPasswordForm"><h3 id="sheetPasswordTitle">교사용 제출 내용 확인</h3><label for="sheetPasswordInput">비밀번호</label><input id="sheetPasswordInput" type="password" autocomplete="off" required style="width:100%;box-sizing:border-box;margin:12px 0" aria-describedby="sheetPasswordError"><p id="sheetPasswordError" role="alert" style="color:#b91c1c"></p><div class="actions"><button type="submit" class="btn primary">확인</button><button type="button" class="btn" id="sheetPasswordCancel">취소</button></div></form>';
+document.body.append(sheetDialog);
+const sheetPasswordInput=document.getElementById("sheetPasswordInput");
 document.getElementById("openTeacherSheet").addEventListener("click",()=>{
- const password=window.prompt("제출 내용을 확인하려면 교사용 비밀번호를 입력하세요.");
- if(password===null)return;
- if(password!=="0543"){window.alert("비밀번호가 올바르지 않습니다.");return;}
+ sheetPasswordInput.value="";document.getElementById("sheetPasswordError").textContent="";
+ sheetDialog.showModal();sheetPasswordInput.focus();
+});
+document.getElementById("sheetPasswordCancel").addEventListener("click",()=>sheetDialog.close());
+sheetDialog.addEventListener("close",()=>{sheetPasswordInput.value="";document.getElementById("openTeacherSheet").focus();});
+document.getElementById("sheetPasswordForm").addEventListener("submit",event=>{
+ event.preventDefault();
+ if(sheetPasswordInput.value!=="0543"){document.getElementById("sheetPasswordError").textContent="비밀번호가 올바르지 않습니다.";sheetPasswordInput.value="";sheetPasswordInput.focus();return;}
+ sheetDialog.close();
  window.open("https://docs.google.com/spreadsheets/d/12N4hyySUCzYDpudKSS7_erRK3gc8dI3HcdHxovOuu-A/edit?usp=sharing","_blank","noopener,noreferrer");
 });
 function randomHex(bytes){const a=new Uint8Array(bytes);crypto.getRandomValues(a);return Array.from(a,b=>b.toString(16).padStart(2,"0")).join("")}
