@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>1.1.컴퓨팅 시스템의 구성과 동작</title>
+<style>
+:root{--blue:#1d4ed8;--soft:#eff6ff;--ink:#203047;--muted:#526174;--line:#d8e2ef;--green:#166534;--red:#b91c1c}
+*{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:var(--ink);font:16px/1.7 system-ui,"Malgun Gothic",sans-serif}button,input,textarea,select{font:inherit}button,a,summary{touch-action:manipulation}button{cursor:pointer}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}[hidden]{display:none!important}
+header{background:var(--blue);color:#fff;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:24px}header h1{font-size:24px;margin:0}header p{font-size:14px;margin:4px 0 0}.identity{display:flex;gap:12px;flex-shrink:0;align-items:center}.identity label{font-size:14px;font-weight:700}.identity input{display:block;width:115px;background:white;border:1px solid white;color:#203047;margin-top:4px;padding:8px 10px;border-radius:8px}
+nav{position:sticky;top:0;z-index:10;background:white;display:flex;flex-wrap:wrap;gap:7px;padding:10px max(14px,calc((100% - 1160px)/2));border-bottom:1px solid var(--line)}.btn,.tab{border:1px solid var(--line);background:white;color:var(--ink);border-radius:9px;padding:9px 13px;font-weight:700}.btn:hover,.tab:hover{background:var(--soft)}.primary,.tab[aria-selected="true"]{background:var(--blue);border-color:var(--blue);color:white}.primary:hover{background:#1e40af}button:disabled{opacity:.45;cursor:not-allowed}main{max-width:1200px;margin:auto;padding:20px}section{background:white;border:1px solid var(--line);border-radius:15px;padding:23px;margin-bottom:18px}h2{font-size:24px;margin:0 0 10px}h3{font-size:19px;margin:22px 0 10px}p{margin:8px 0}.muted,figcaption{color:var(--muted);font-size:13px}.tag{display:inline-block;font-size:13px;background:var(--soft);color:var(--blue);padding:3px 10px;border-radius:20px;margin-bottom:9px}.note{background:var(--soft);border-left:4px solid var(--blue);padding:13px 16px;margin:14px 0;border-radius:7px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{padding:16px;border:1px solid var(--line);border-radius:11px}.card h3{margin:0 0 6px}.actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:14px 0}details{border:1px solid var(--line);border-radius:10px;margin:10px 0}summary{padding:12px 16px;font-weight:700;cursor:pointer}details>div{padding:0 16px 16px}label{display:block;font-weight:700;margin-top:12px}input,textarea,select{width:100%;background:white;border:1px solid #a7b6ca;border-radius:8px;padding:10px;color:var(--ink);margin-top:5px}textarea{min-height:88px;resize:vertical}.feedback{font-weight:700;white-space:pre-line;margin-top:12px}.good{color:var(--green)}.bad{color:var(--red)}
+figure{margin:0}.photo{margin-bottom:9px}.photo button{display:block;position:relative;width:100%;padding:0;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:#e7edf5;color:var(--ink)}.photo img{display:block;width:100%;height:210px;object-fit:cover}.photo button::after{content:"사진 크게 보기";position:absolute;bottom:8px;right:8px;background:#10223ee8;color:white;border-radius:6px;font-size:12px;padding:3px 8px}.photo figcaption{padding:5px 2px;line-height:1.45}.photo a{color:#1d4ed8}.contain img{object-fit:contain;background:#f3f6fa}.hero-photo img{height:310px}.error-photo{padding:24px;min-height:140px;display:grid;place-items:center}.pick{border:2px solid var(--line);background:white;border-radius:10px;padding:11px;text-align:left;color:var(--ink)}.pick[aria-pressed="true"]{border-color:var(--blue);background:var(--soft)}.pick b{display:block}.answer-box{padding:17px;background:#f8fafc;border:1px solid var(--line);border-radius:10px;min-height:105px}
+.body-map{position:relative;min-height:420px;background:linear-gradient(#edf5ff,#f8fafc);border:1px solid var(--line);border-radius:12px;overflow:hidden}.person-head{position:absolute;width:90px;height:90px;border-radius:50%;background:#bfcee5;left:calc(50% - 45px);top:40px}.person-trunk{position:absolute;width:120px;height:160px;border-radius:38px 38px 20px 20px;background:#bfcee5;left:calc(50% - 60px);top:138px}.person-arm{position:absolute;width:35px;height:155px;background:#bfcee5;top:145px;border-radius:30px}.left-arm{left:calc(50% - 105px);transform:rotate(14deg)}.right-arm{right:calc(50% - 105px);transform:rotate(-14deg)}.person-leg{position:absolute;width:45px;height:110px;background:#bfcee5;top:285px;border-radius:25px}.left-leg{left:calc(50% - 52px)}.right-leg{left:calc(50% + 7px)}.hotspot{position:absolute;z-index:1;background:white;border:2px solid #7891b4;border-radius:9px;padding:7px 10px;font-weight:700;max-width:47%}.hotspot[aria-pressed="true"]{background:var(--blue);color:white;border-color:var(--blue)}.hotspot:nth-of-type(1){left:8px;top:85px}.hotspot:nth-of-type(2){right:8px;top:20px}.hotspot:nth-of-type(3){right:8px;top:220px}.hotspot:nth-of-type(4){left:8px;top:300px}.hotspot:nth-of-type(5){right:8px;top:340px}.body-label{position:absolute;bottom:7px;left:12px;font-size:12px;color:var(--muted)}
+.game-card{display:flex;align-items:center;gap:9px;padding:8px;border:2px solid var(--line);border-radius:9px;text-align:left;background:white;color:var(--ink)}.game-card img{width:64px;height:60px;object-fit:cover;border-radius:5px}.game-card[aria-pressed="true"]{border-color:var(--blue);background:var(--soft)}.game-card small{display:block;color:var(--muted)}.bins{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.bins button{flex:1;min-width:110px}.question{display:grid;grid-template-columns:1fr 200px;gap:15px;align-items:center;padding:12px 0;border-bottom:1px dashed var(--line)}.question label{margin:0}.question select{margin:0}.correct{background:#f0fdf4;border-color:#15803d}.wrong{background:#fef2f2;border-color:#b91c1c}
+.sim{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:18px}.stepbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}.stepbar span{padding:4px 8px;border-radius:6px;background:#e2e8f0;font-size:13px}.stepbar .active{color:white;background:var(--blue)}.screen{background:#14243c;color:#e2e8f0;border-radius:11px;padding:20px;min-height:150px}.screen h3{color:#93c5fd;margin:0 0 10px}.screen output{display:block;font-size:23px;font-weight:700}.screen label{display:inline-block;margin-right:10px}.screen input{width:80px}.memory{margin-top:12px}.memory .card{background:white}.memory output{display:block;color:#1d4ed8;font-weight:700}.checklist input{width:auto;margin-right:8px}.checklist label{font-weight:400}dialog{max-width:min(1000px,94vw);max-height:92vh;padding:20px;border:0;border-radius:13px;color:var(--ink)}dialog::backdrop{background:#071527cc}dialog img{width:100%;max-height:65vh;object-fit:contain;background:#edf2f7}dialog .actions{justify-content:space-between}footer{max-width:1200px;margin:auto;padding:0 20px 28px;color:var(--muted);font-size:13px}#printHead{display:none}
+@media(max-width:800px){header{align-items:flex-start;flex-wrap:wrap;padding:18px}.identity{margin-left:auto}header h1{font-size:21px}.two{grid-template-columns:1fr}.question{grid-template-columns:1fr}main{padding:12px}section{padding:17px}.hero-photo img{height:230px}}
+@media print{@page{size:A4;margin:15mm}body{background:white;font-size:11pt}header,nav,footer,.no-print,dialog{display:none!important}main{padding:0}.pane{display:none!important}#activity{display:block!important}#printHead{display:block}section{border:0;padding:0;margin-bottom:20px}textarea,input{color:black;border:1px solid #aaa}textarea{resize:none;overflow:visible}.field,.card{break-inside:avoid}h2,h3,label{break-after:avoid}.two{display:block}.note{background:white}}
+
+/* 사진 식별성과 인체 비율 개선 */
+.photo img{object-fit:contain;background:#f0f4fa}
+.body-map{min-height:570px}.person-head{top:35px;width:85px;height:85px;left:calc(50% - 42.5px)}
+.person-trunk{top:130px;height:190px;width:120px}.person-arm{top:145px;height:190px}
+.person-leg{top:305px;height:220px;width:45px}.hotspot:nth-of-type(4){top:375px}.hotspot:nth-of-type(5){top:460px}
+.kiosk-layout{display:grid;grid-template-columns:minmax(340px,1.15fr) minmax(280px,1fr);gap:20px;align-items:start}
+.kiosk-machine{background:#202e43;border:9px solid #334155;border-radius:25px;padding:14px;box-shadow:0 10px 25px #172a451c}
+.kiosk-display{background:#fffaf3;border-radius:13px;overflow:hidden;min-height:530px;color:#203047}
+.kiosk-top{background:#c2410c;color:white;padding:16px;text-align:center}.kiosk-top h3{margin:0;font-size:23px}
+.kiosk-inner{padding:18px}.menu-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.menu-item{border:2px solid #fed7aa;background:white;border-radius:12px;padding:14px 8px;font-weight:700;color:#7c2d12}
+.menu-item .food{font-size:42px;display:block}.menu-item small{display:block}.menu-item:hover{background:#ffedd5}
+.cart-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px dashed #cbd5e1}
+.cart-row button{padding:3px 10px;background:white;border:1px solid #94a3b8;border-radius:6px}
+.kiosk-total{font-size:24px;text-align:right;font-weight:800;margin:15px 0}.receipt{background:white;border:2px dashed #94a3b8;padding:18px;text-align:center}
+.kiosk-log{background:#14243c;color:#e2e8f0;border-radius:10px;padding:15px;min-height:105px}.device-active{border:3px solid #2563eb!important;background:#eff6ff!important}
+@media(max-width:850px){.kiosk-layout{grid-template-columns:1fr}}
+
+/* 고정 크기 키오스크와 한 줄씩 보이는 메모리 */
+.kiosk-machine{position:sticky;top:110px;width:100%}
+.kiosk-display{height:780px;min-height:780px;display:flex;flex-direction:column}
+.kiosk-top{flex:0 0 auto}.kiosk-inner{flex:1;min-height:0;overflow-y:auto;scrollbar-gutter:stable;padding:22px}
+.kiosk-layout{grid-template-columns:minmax(360px,1.25fr) minmax(300px,1fr)}
+.memory{grid-template-columns:1fr}.memory output{font-size:14px;font-weight:500}
+.state-line{display:block;padding:6px 0;border-bottom:1px dashed #cbd5e1;overflow-wrap:anywhere}
+.state-line:last-child{border-bottom:0}.state-line.heading{font-weight:800;color:#1e3a8a}
+.state-list{max-height:320px;overflow-y:auto;padding-right:6px}
+.memory-photos{display:grid;grid-template-columns:1fr;gap:12px}
+.memory-photos .photo img{height:195px;object-fit:contain}
+#casePhoto:has(img[alt*="태블릿"]) img{height:430px;object-fit:contain}
+#casePhoto img{height:340px;object-fit:contain}
+#organPhoto .photo img{height:280px;object-fit:contain}
+#organPhoto .memory-photos .photo img{height:195px}
+@media(max-width:850px){.kiosk-layout{grid-template-columns:1fr}.kiosk-machine{position:static}.kiosk-display{height:760px;min-height:760px}}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>컴퓨팅 시스템의 구성과 동작</h1><p>중학교 정보 · 사진으로 탐색하고, 직접 움직이며 이해하기</p></div>
+  <div class="identity" aria-label="학생 정보">
+    <label for="studentId">학번<input id="studentId" data-save placeholder="예: 10101" maxlength="20" autocomplete="off"></label>
+    <label for="studentName">이름<input id="studentName" data-save placeholder="이름" maxlength="30" autocomplete="off"></label>
+  </div>
+</header>
+<nav role="tablist" aria-label="수업 순서">
+  <button class="tab" id="tab-intro" role="tab" aria-controls="intro" aria-selected="true" data-tab="intro">도입 · 과거와 현재</button>
+  <button class="tab" id="tab-around" role="tab" aria-controls="around" aria-selected="false" tabindex="-1" data-tab="around">1. 주변의 시스템</button>
+  <button class="tab" id="tab-parts" role="tab" aria-controls="parts" aria-selected="false" tabindex="-1" data-tab="parts">2. 몸과 비교하기</button>
+  <button class="tab" id="tab-operation" role="tab" aria-controls="operation" aria-selected="false" tabindex="-1" data-tab="operation">3. 주문 처리 실험</button>
+  <button class="tab" id="tab-activity" role="tab" aria-controls="activity" aria-selected="false" tabindex="-1" data-tab="activity">활동 1 · 활동지</button>
+</nav>
+<main>
+<div class="pane" id="intro" role="tabpanel" aria-labelledby="tab-intro">
+<section>
+  <span class="tag">교과서 12~13쪽 · 생각 열기</span><h2>방을 채우던 컴퓨터가 손목 위로!</h2>
+  <p>두 사진을 크게 살펴보고 <b>크기·사용 방법·사용 장소</b>의 변화를 찾아보세요.</p>
+  <div class="two"><div><div class="photo-slot hero-photo" data-photo="eniac"></div><h3>과거 · 대형 전자식 컴퓨터</h3><p>많은 장치로 구성되어 큰 공간이 필요했어요. 사진은 초기 전자식 컴퓨터 중 하나인 ENIAC이에요.</p></div><div><div class="photo-slot hero-photo" data-photo="watch"></div><h3>현재 · 손목에 착용하는 컴퓨터</h3><p>작은 기기에서 데이터를 측정·처리하고, 다른 기기와 정보를 주고받아요.</p></div></div>
+  <h3>변화 탐색 버튼</h3><div class="grid" id="changeButtons"></div><div class="note" id="changeInfo" role="status"></div>
+  <label for="introThought">사진에서 찾은 변화와 미래에 바라는 변화는?</label><textarea id="introThought" data-save placeholder="과거에는 …, 지금은 …. 앞으로는 …."></textarea>
+  <details><summary>오늘의 학습 목표</summary><div>① 컴퓨팅 시스템의 의미와 활용 사례를 찾을 수 있어요.<br>② 하드웨어·소프트웨어를 구별하고 구성 요소의 역할을 설명할 수 있어요.<br>③ 여러 구성 요소가 협력해 문제를 해결하는 과정을 설명할 수 있어요.</div></details>
+</section>
+</div>
+<div class="pane" id="around" role="tabpanel" aria-labelledby="tab-around" hidden>
+<section>
+  <span class="tag">교과서 14~15쪽</span><h2>1. 내 주변의 컴퓨팅 시스템</h2>
+  <p><b>컴퓨팅</b>은 컴퓨터를 이용해 정보를 처리하고 필요한 일을 해결하는 과정이에요.</p>
+  <div class="note"><b>컴퓨팅 시스템</b>은 사용자가 원하는 일을 처리하도록 <b>하드웨어와 소프트웨어</b>로 구성된 도구예요.</div>
+  <div class="two"><div class="card"><h3>하드웨어 · 물리적인 장치</h3><div class="photo-slot" data-photo="pc"></div><p>키보드·모니터·CPU처럼 실제 형태가 있는 전자 장치예요. 내부에 있어 보이지 않는 장치도 포함해요.</p></div><div class="card"><h3>소프트웨어 · 작업을 수행하는 프로그램</h3><div class="photo-slot contain" data-photo="software"></div><p>하드웨어를 활용해 정보를 처리해요. 운영체제·웹 브라우저·문서 작성 프로그램 등이 있어요.</p><p class="muted">사진은 실제 문서 작성 프로그램의 화면이에요. 프로그램이 실행되는 모니터 자체는 하드웨어예요.</p></div></div>
+</section>
+<section><h2>생활 속 시스템 탐색</h2><p>사례를 고른 뒤 사진과 설명을 살펴보세요. 사진 속 기기는 종류를 보여 주는 예시예요.</p><div class="grid" id="caseButtons"></div><div class="two" style="margin-top:16px"><div id="casePhoto"></div><div class="answer-box" id="caseInfo" aria-live="polite"></div></div><label for="nearby">우리 학교에서 찾은 또 다른 컴퓨팅 시스템</label><textarea id="nearby" data-save placeholder="어디에 있나요? 어떤 문제를 해결하나요?"></textarea></section>
+<section><h2>소프트웨어도 역할이 달라요</h2><div class="two"><div class="card"><h3>시스템 소프트웨어</h3><p>하드웨어를 제어·관리하고 앱이 작동할 환경을 만들어요.</p><p><b>운영체제</b>: Windows·Android·iOS 등<br><b>드라이버</b>: 프린터 같은 장치의 제어를 도와요.</p></div><div class="card"><h3>응용 소프트웨어</h3><p>사용자가 특정 목적의 작업을 하도록 도와줘요.</p><p>문서 작성 프로그램 · 그림 편집 프로그램 · 웹 브라우저 · 게임</p></div></div><div id="softwareQuiz"></div><button class="btn primary" id="gradeSoftware">분류 확인</button><div class="feedback" id="softwareResult" role="status"></div></section>
+</div>
+<div class="pane" id="parts" role="tabpanel" aria-labelledby="tab-parts" hidden>
+<section>
+  <span class="tag">교과서 16~17쪽</span><h2>2. 하드웨어를 우리 몸에 비유하면?</h2><p>몸 주변의 버튼을 누르면 해당 역할의 <b>사진·비유·사례</b>가 나타나요.</p>
+  <div class="two"><div class="body-map" aria-label="하드웨어 역할을 고르는 인체 비유 모형"><div class="person-head" aria-hidden="true"></div><div class="person-trunk" aria-hidden="true"></div><div class="person-arm left-arm" aria-hidden="true"></div><div class="person-arm right-arm" aria-hidden="true"></div><div class="person-leg left-leg" aria-hidden="true"></div><div class="person-leg right-leg" aria-hidden="true"></div><button class="hotspot" data-organ="0" aria-pressed="true">눈·귀·피부 → 입력</button><button class="hotspot" data-organ="1" aria-pressed="false">뇌의 판단 → 처리</button><button class="hotspot" data-organ="2" aria-pressed="false">입·손의 표현 → 출력</button><button class="hotspot" data-organ="3" aria-pressed="false">뇌의 기억 → 기억</button><button class="hotspot" data-organ="4" aria-pressed="false">다른 사람과 대화 → 통신</button><span class="body-label">역할을 이해하기 위한 단순화된 모형</span></div><div><div id="organPhoto" class="contain"></div><div id="organInfo" class="answer-box" aria-live="polite"></div><div class="actions" id="memoryButtons" hidden><button class="btn" data-memory="ram">RAM 사진</button><button class="btn" data-memory="ssd">SSD 사진</button><button class="btn" data-memory="hdd">HDD 사진</button></div></div></div>
+  <div class="note"><b>비유의 한계:</b> 뇌는 판단과 기억을 함께 하고, 손은 만져서 입력받거나 표현하는 데 모두 쓰여요. 통신도 한 기관이 아니라 <b>상대와 정보를 주고받는 활동</b>에 비유한 것이에요. 사람의 기억은 RAM처럼 전원이 꺼져서 사라지는 것이 아니에요.</div>
+  <details><summary>RAM·SSD·HDD는 어떻게 다를까요?</summary><div><b>RAM(주기억 장치)</b>: 실행 중인 프로그램과 데이터를 임시로 기억해요. 전원이 꺼지면 내용이 사라져요. ‘지금 머릿속에 떠올려 작업하는 내용’에 비유할 수 있어요.<br><b>SSD·HDD(보조 기억 장치)</b>: 프로그램과 파일을 장기간 저장해요. 전원이 꺼져도 남아요. 신체 기관보다는 ‘공책에 기록해 보관하기’에 비유하면 더 쉬워요.<br><br><b>SSD와 HDD 비교</b>: SSD는 반도체에 저장하고 움직이는 부품이 없어요. HDD는 회전하는 자기 디스크와 읽기·쓰기 헤드를 이용해요. 둘 다 전원이 꺼져도 데이터를 보관하는 보조 기억 장치예요. 일반적으로 SSD가 접근 속도가 빠르고, HDD는 같은 비용으로 큰 용량을 마련하는 데 유리해요.<br>여기서는 주기억 장치 중 RAM을 중심으로 배워요.</div></details>
+</section>
+<section><h2>사진 카드 분류 실험실</h2><p><b>① 카드를 눌러 확대 → ② 닫고 역할 선택 → ③ 확인하기</b><br>드래그하지 않아도 사용할 수 있어요. 카드를 다시 선택하면 분류를 바꿀 수 있어요.</p><div class="grid" id="gameCards"></div><div class="bins" id="gameBins"></div><div class="actions"><button class="btn primary" id="gradeGame">분류 확인하기</button><button class="btn" id="resetGame">분류 초기화</button></div><div class="feedback" id="gameResult" role="status"></div><div class="note">와이파이는 통신 기술, <b>무선 랜 어댑터</b>는 통신 장치예요. 터치스크린은 터치를 감지하는 입력과 화면을 보여 주는 출력을 함께 담당해요.</div></section>
+</div>
+<div class="pane" id="operation" role="tabpanel" aria-labelledby="tab-operation" hidden>
+<section><span class="tag">교과서 18쪽 · 웹앱 모형</span><h2>3. 키오스크 주문은 어떻게 처리될까요?</h2><p>메뉴를 입력하고 주문을 처리하며 <b>입력·처리·출력·기억·통신</b>을 연결해 보세요.</p><div class="note">운영체제가 장치와 자원을 관리하고, 주문 앱은 주문 작업을 수행해요. 실제로는 여러 과정이 반복·병렬로 일어나지만, 이 모형에서는 차례대로 살펴봐요.</div>
+<div class="kiosk-layout">
+<div class="kiosk-machine"><div class="kiosk-display">
+<div class="kiosk-top"><h3>우리학교 샌드위치 카페</h3><div>체험용 키오스크 · 실제 결제 없음</div></div>
+<div class="kiosk-inner" id="kioskUI"></div></div></div>
+<div><h3>지금 컴퓨터 안에서는?</h3><div id="kioskLog" class="kiosk-log" role="status" aria-live="polite"></div>
+<div class="grid memory"><div class="card" id="deviceRam"><b>RAM · 작업 중인 주문</b><output id="ramState"></output></div>
+<div class="card" id="deviceSsd"><b>SSD · 저장된 주문</b><output id="ssdState"></output></div>
+<div class="card" id="deviceNetwork"><b>통신 장치 · 주방과 연결</b><output id="networkState"></output></div></div>
+<div class="actions"><button class="btn" id="powerOff">갑자기 전원 끄기</button><button class="btn" id="resetSim">실험 기록 초기화</button></div>
+<div id="simNotice" class="feedback" role="status"></div>
+<details><summary>실험 순서와 관찰 과제</summary><div>① 전원 켜기 → ② 주문 시작 → ③ 메뉴·수량 선택 → ④ 주문 금액 계산 → ⑤ 저장 → ⑥ 주방 전송 → ⑦ 영수증 확인<br>저장하기 전과 후에 ‘갑자기 전원 끄기’를 눌러 RAM과 SSD를 비교해요.</div></details>
+<p class="muted">가격은 가상 값이에요. 주문 기록은 이 실험의 메모리에만 유지되므로 페이지를 새로 고치면 초기화돼요. 전원 버튼은 실제 컴퓨터를 끄지 않아요.</p></div></div>
+<label for="memoryThought">저장하기 전과 후에 전원을 꺼 보세요. 무엇이 다르나요?</label><textarea id="memoryThought" data-save placeholder="RAM의 작업 내용과 SSD에 기록된 주문을 비교해요."></textarea>
+</section>
+<section><h2>사용된 하드웨어를 사진으로 다시 보기</h2><div class="grid"><div class="card"><div class="photo-slot" data-photo="cpu"></div><b>처리: 금액 계산</b></div><div class="card"><div class="photo-slot" data-photo="ram"></div><b>주기억: 실행 중인 주문</b></div><div class="card"><div class="photo-slot" data-photo="ssd"></div><b>보조 기억: SSD에 주문 기록</b></div><div class="card"><div class="photo-slot" data-photo="hdd"></div><b>비교: HDD도 보조 기억 장치</b></div></div><p class="muted">사진은 해당 장치 종류의 예시이며 특정 키오스크의 실제 내부 사진은 아니에요.</p></section>
+</div>
+<div class="pane" id="activity" role="tabpanel" aria-labelledby="tab-activity" hidden>
+<div id="printHead"><h1>활동 1. 컴퓨팅 시스템 이해하기</h1><p id="printIdentity"></p></div>
+<section><span class="tag">교과서 19쪽 활동 재구성</span><h2>활동 1. 컴퓨팅 시스템 이해하기</h2><div class="note">확인하지 못한 사양은 추측하지 말고 ‘확인하지 못함’이라고 써요. 일련번호·기기 ID 등 개인 식별 정보는 적지 않아요.</div><h3>1. 내 기기의 하드웨어와 소프트웨어</h3><details class="no-print"><summary>노트북 사양 확인 도움말</summary><div>Windows: 설정 → 시스템 → 정보에서 CPU·RAM·운영체제를 확인해요. 저장 용량은 설정 → 시스템 → 저장소에서 확인할 수 있어요.<br>macOS: Apple 메뉴 → 이 Mac에 관하여에서 칩·메모리·운영체제를 확인해요.<br>기기와 버전에 따라 메뉴가 달라요. 학교 기기의 설정을 바꾸거나 프로그램을 설치하지 않아요.</div></details><div class="grid" id="specFields"></div><label for="hardwareMore">입력·출력·통신 장치</label><textarea id="hardwareMore" data-save placeholder="입력: … / 출력: … / 통신: …"></textarea></section>
+<section><h3>2. 시스템이 문제를 해결하는 과정</h3><div id="processFields"></div></section>
+<section><h3>3. 새롭게 등장하면 좋을 시스템</h3><div id="newFields"></div><div class="checklist"><label><input type="checkbox" id="check1" data-save>하드웨어와 소프트웨어를 구별했어요.</label><label><input type="checkbox" id="check2" data-save>입력·처리·저장·출력과 장치를 연결했어요.</label><label><input type="checkbox" id="check3" data-save>새 시스템의 장치와 소프트웨어 기능을 설명했어요.</label></div><div class="no-print"><div class="actions"><button class="btn primary" id="submitWork">선생님께 제출하기</button><button class="btn" id="clearWork">이 수업의 기기 내 기록 지우기</button></div><p class="muted">제출 후 같은 학번으로 다시 제출하면 기존 내용이 수정돼요. 다른 수업의 기록은 별도 탭에 저장돼요. 공용 기기는 제출 성공을 확인한 뒤 이 수업의 기기 내 기록을 지워 주세요.</p><div class="feedback" id="workMessage" role="status"></div></div></section>
+</div>
+</main>
+<footer>내용: 첨부 교과서 12~19쪽을 수업용으로 재구성. 사진·화면: Wikimedia Commons(CC0·CC BY-SA, ENIAC은 퍼블릭 도메인, LibreOffice 화면은 GPL / MPL 2.0). 사진마다 원본·출처 링크 제공. 외부 사진을 보려면 인터넷이 필요하며, 차단된 환경에서도 설명과 활동은 사용할 수 있어요.</footer>
+<dialog id="photoDialog" aria-labelledby="photoTitle"><div class="actions"><h2 id="photoTitle">사진 보기</h2><button class="btn" id="closePhoto">닫기</button></div><img id="largePhoto" alt=""><p id="photoCredit"></p><a id="photoSource" target="_blank" rel="noopener noreferrer">사진 원본·이용 조건 보기</a></dialog>
+<script>
+"use strict";
+const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
+/* 검색으로 확인한 공개 사진과 출처. 다른 사진으로 바꿀 때 이용 조건도 확인하세요. */
+const base="https://upload.wikimedia.org/wikipedia/commons/";
+const photos={
+ eniac:{path:"1/16/Classic_shot_of_the_ENIAC.jpg",file:"Classic_shot_of_the_ENIAC.jpg",title:"ENIAC",credit:"U. S. Army Photo · 퍼블릭 도메인"},
+ devices:{path:"f/f6/Creative_flatlay_on_dark_wood_%28Unsplash%29.jpg",file:"Creative_flatlay_on_dark_wood_(Unsplash).jpg",title:"태블릿·스마트폰·노트북",credit:"Andyone · CC0"},
+ laptop:{path:"f/f4/Man_with_smartphone_and_laptop_%28Unsplash%29.jpg",file:"Man_with_smartphone_and_laptop_(Unsplash).jpg",title:"노트북과 스마트폰 사용",credit:"Alejandro Escamilla · CC0"},
+ watch:{path:"b/b0/Smartwatch-828786.jpg",file:"Smartwatch-828786.jpg",title:"스마트워치",credit:"Crew · CC0"},
+ pc:{path:"3/3f/A_personal_computer.jpg",file:"A_personal_computer.jpg",title:"개인용 컴퓨터",credit:"LarryBroom · CC0"},
+ keyboard:{path:"e/e0/Computer_keyboard_rainbow.jpg",file:"Computer_keyboard_rainbow.jpg",title:"키보드",credit:"Kurt Kaiser · CC0"},
+ cpu:{path:"4/45/A_processor_%28Pixabay%29.jpg",file:"A_processor_(Pixabay).jpg",title:"처리 장치 예시",credit:"RemazteredStudio · CC0"},
+ ram:{path:"7/75/SDRAM_memory_module.jpg",file:"SDRAM_memory_module.jpg",title:"RAM 모듈",credit:"Vitaly Zdanevich · CC0"},
+ ssd:{path:"c/c3/Samsung_SSD_840_120GB_MZ-7TD120--6_BOARD_TOP.JPG",file:"Samsung_SSD_840_120GB_MZ-7TD120--6_BOARD_TOP.JPG",title:"SSD 내부 기판",credit:"MatteX · CC0"}
+};
+Object.assign(photos,{"laptop": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Lenovo_Ideapad_3_20240401_121836.jpg/1280px-Lenovo_Ideapad_3_20240401_121836.jpg", "file": "Lenovo_Ideapad_3_20240401_121836.jpg", "title": "노트북 · 화면과 키보드", "credit": "Nasenber3 · CC BY-SA 4.0"}, "cpu": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/ThinkPad_X230_-_Intel_microprocessor_Core_i5-3230M_%28SR0WX%29-0988.jpg/1280px-ThinkPad_X230_-_Intel_microprocessor_Core_i5-3230M_%28SR0WX%29-0988.jpg", "file": "ThinkPad_X230_-_Intel_microprocessor_Core_i5-3230M_(SR0WX)-0988.jpg", "title": "CPU · Intel Core i5 중앙 처리 장치", "credit": "© Raimond Spekking · CC BY-SA 4.0"}, "software": {"url": "https://upload.wikimedia.org/wikipedia/commons/0/0d/LibreOffice_Writer_4.0.1_screenshot.png", "file": "LibreOffice_Writer_4.0.1_screenshot.png", "title": "LibreOffice Writer · 문서 작성 프로그램 화면", "credit": "The Document Foundation · LGPL"}, "tablet": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/IPad_Air_2013_004.jpg/1280px-IPad_Air_2013_004.jpg", "file": "IPad_Air_2013_004.jpg", "title": "태블릿 · iPad Air", "credit": "Mike Peel (www.mikepeel.net) · CC BY-SA 4.0"}, "network": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4f/IFA2012_TP-Link_3_USB_Adapter.jpg/1280px-IFA2012_TP-Link_3_USB_Adapter.jpg", "file": "IFA2012_TP-Link_3_USB_Adapter.jpg", "title": "USB 무선 랜 어댑터 · 통신 장치", "credit": "Michael Movchin · CC BY-SA 3.0"}, "phone": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Man_with_smartphone_and_laptop_%28Unsplash%29.jpg/1280px-Man_with_smartphone_and_laptop_%28Unsplash%29.jpg", "file": "Man_with_smartphone_and_laptop_(Unsplash).jpg", "title": "스마트폰을 사용하는 모습", "credit": "Alejandro Escamilla · CC0"}});
+Object.assign(photos,{"software": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Emmabunt%C3%BCs_Debian_edition_6_1.01_LibreOffice_Writer_25.2.3.2_-_English.png/1280px-Emmabunt%C3%BCs_Debian_edition_6_1.01_LibreOffice_Writer_25.2.3.2_-_English.png", "file": "Emmabuntüs Debian edition 6 1.01 LibreOffice Writer 25.2.3.2 - English.png", "title": "LibreOffice Writer 25.2 · 문서 작성 화면", "credit": "Le collectif Emmabuntüs / The Document Foundation · GPL / MPL 2.0"}, "tablet": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/IPad_Air.png/960px-IPad_Air.png", "file": "IPad Air.png", "title": "태블릿 앞면 · iPad Air", "credit": "Zach Vega · CC BY-SA 3.0"}, "cpu": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/Czy_nowe_procesory_Intela_to_ULTRA_rozczarowanie%C2%BF_%282160p_30fps_VP9_LQ-128kbit_AAC%29-00.01.16.400.png/1280px-Czy_nowe_procesory_Intela_to_ULTRA_rozczarowanie%C2%BF_%282160p_30fps_VP9_LQ-128kbit_AAC%29-00.01.16.400.png", "file": "Czy nowe procesory Intela to ULTRA rozczarowanie¿ (2160p 30fps VP9 LQ-128kbit AAC)-00.01.16.400.png", "title": "Intel Core Ultra 계열 · CPU 실물 비교", "credit": "ZMASLO · CC BY 3.0"}, "hdd": {"url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/Open_hard-drive.jpg/1280px-Open_hard-drive.jpg", "file": "Open hard-drive.jpg", "title": "HDD 내부 · 원판과 읽기·쓰기 헤드", "credit": "Zzubnik · 퍼블릭 도메인"}});
+function photoURL(key){if(photos[key].url)return photos[key].url;const path=photos[key].path;return key==="eniac"?base+path:"https://thumb.wikimedia.org/wikipedia/commons/thumb/"+path+"/1280px-"+path.split("/").pop()}
+function sourceURL(key){return "https://commons.wikimedia.org/wiki/File:"+encodeURIComponent(photos[key].file)}
+function makeImage(key){const img=document.createElement("img");img.src=photoURL(key);img.alt=photos[key].title;img.loading="lazy";img.decoding="async";img.addEventListener("error",()=>{const text=document.createElement("span");text.className="error-photo";text.textContent=photos[key].title+" — 사진 연결이 제한되어 있어요. 아래 출처에서 확인할 수 있어요.";img.replaceWith(text)},{once:true});return img}
+function putPhoto(host,key){host.replaceChildren();const p=photos[key],f=document.createElement("figure"),b=document.createElement("button"),cap=document.createElement("figcaption"),a=document.createElement("a");f.className="photo";b.type="button";b.setAttribute("aria-label",p.title+" 사진 크게 보기");b.append(makeImage(key));b.addEventListener("click",()=>openPhoto(key));a.href=sourceURL(key);a.target="_blank";a.rel="noopener noreferrer";a.textContent="원본·출처";cap.append(document.createTextNode(p.title+" / "+p.credit+" · "),a);if(p.credit.includes("BY-SA")){const license=document.createElement("a");license.href="https://creativecommons.org/licenses/by-sa/"+(p.credit.includes("3.0")?"3.0":"4.0")+"/";license.textContent=" · 이용 조건";license.target="_blank";license.rel="noopener noreferrer";cap.append(license)}if(p.credit.includes("CC BY 3.0")){const license=document.createElement("a");license.href="https://creativecommons.org/licenses/by/3.0/";license.textContent=" · CC BY 3.0";license.target="_blank";license.rel="noopener noreferrer";cap.append(license)}if(p.credit.includes("MPL")){const license=document.createElement("a");license.href="https://www.mozilla.org/MPL/2.0/";license.textContent=" · MPL 2.0";license.target="_blank";license.rel="noopener noreferrer";cap.append(license)}f.append(b,cap);host.append(f)}
+let photoTrigger=null;
+function openPhoto(key){photoTrigger=document.activeElement;$("#photoTitle").textContent=photos[key].title;$("#largePhoto").src=photoURL(key);$("#largePhoto").alt=photos[key].title;$("#photoCredit").textContent=photos[key].credit;$("#photoSource").href=sourceURL(key);$("#photoDialog").showModal()}
+$("#closePhoto").onclick=()=>$("#photoDialog").close();$("#photoDialog").addEventListener("close",()=>photoTrigger?.focus());
+$$("[data-photo]").forEach(h=>putPhoto(h,h.dataset.photo));
+/* 탭과 키보드 이동 */
+function openTab(id,focus=false){$$(".pane").forEach(p=>p.hidden=p.id!==id);$$(".tab").forEach(b=>{const on=b.dataset.tab===id;b.setAttribute("aria-selected",String(on));b.tabIndex=on?0:-1;if(on&&focus)b.focus({preventScroll:true})});window.scrollTo({top:0,left:0,behavior:"instant"})}
+$$(".tab").forEach((b,i)=>{b.onclick=()=>openTab(b.dataset.tab);b.onkeydown=e=>{const a=$$(".tab");let n=i;if(e.key==="ArrowRight")n=(i+1)%a.length;else if(e.key==="ArrowLeft")n=(i+a.length-1)%a.length;else if(e.key==="Home")n=0;else if(e.key==="End")n=a.length-1;else return;e.preventDefault();openTab(a[n].dataset.tab,true)}});
+const changes=[["크기·휴대성","큰 공간을 차지하던 컴퓨터에서 휴대하거나 착용하는 시스템으로 사용 범위가 넓어졌어요."],["처리·저장 능력","작은 장치에서도 많은 데이터를 저장하고 빠르게 처리할 수 있게 발전했어요."],["사용 방법","키보드·마우스뿐 아니라 터치·음성·동작 등 다양한 방식으로 사용해요."],["연결·활용 장소","다른 시스템과 연결되어 학교·병원·교통·가정 등 여러 분야의 문제를 해결해요."]];
+changes.forEach(([title,text],i)=>{const b=document.createElement("button");b.className="pick";b.textContent=title;b.setAttribute("aria-pressed",String(i===0));b.onclick=()=>{$$("#changeButtons button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));$("#changeInfo").textContent=text};$("#changeButtons").append(b)});$("#changeInfo").textContent=changes[0][1];
+const cases=[
+ ["노트북","laptop","문서 작성·자료 검색·프로그래밍을 해요.","키보드·CPU·기억 장치","운영체제·문서 작성 프로그램·웹 브라우저"],
+ ["스마트폰","phone","통화·길 찾기·사진 촬영·결제를 해요.","터치스크린·카메라·통신 장치","운영체제·지도 앱·카메라 앱"],
+ ["태블릿","tablet","강의를 보고 전자 펜으로 필기하거나 그림을 그려요.","터치스크린·전자 펜·스피커","운영체제·필기 앱·그림 앱"],
+ ["스마트워치","watch","움직임과 심박수 등을 측정하고 기록을 확인해요.","센서·처리 장치·화면·통신 장치","운영체제·건강 기록 앱"]
+];
+function showCase(i){const c=cases[i];putPhoto($("#casePhoto"),c[1]);$("#caseInfo").replaceChildren();[c[0],c[2],"하드웨어: "+c[3],"소프트웨어: "+c[4]].forEach((s,j)=>{const e=document.createElement(j?"p":"h3");e.textContent=s;$("#caseInfo").append(e)});$$("#caseButtons button").forEach((b,j)=>b.setAttribute("aria-pressed",String(i===j)))}
+cases.forEach((c,i)=>{const b=document.createElement("button");b.className="pick";b.textContent=c[0];b.onclick=()=>showCase(i);$("#caseButtons").append(b)});showCase(0);
+const softwareRows=[["운영체제","시스템 소프트웨어"],["프린터 드라이버","시스템 소프트웨어"],["웹 브라우저","응용 소프트웨어"],["그림 편집 프로그램","응용 소프트웨어"]];
+softwareRows.forEach(([name],i)=>{const row=document.createElement("div"),label=document.createElement("label"),select=document.createElement("select");row.className="question";select.id="sw"+i;label.htmlFor=select.id;label.textContent=name;["선택하세요","시스템 소프트웨어","응용 소프트웨어"].forEach((v,j)=>select.add(new Option(v,j?v:"")));select.onchange=()=>{select.className="";$("#softwareResult").textContent="답을 바꿨어요. 다시 확인해 보세요."};row.append(label,select);$("#softwareQuiz").append(row)});
+$("#gradeSoftware").onclick=()=>{let n=0;const wrong=[];softwareRows.forEach(([name,answer],i)=>{const s=$("#sw"+i),ok=s.value===answer;s.className=ok?"correct":"wrong";if(ok)n++;else wrong.push(name+" → "+answer)});$("#softwareResult").className="feedback "+(n===4?"good":"bad");$("#softwareResult").textContent=n+" / 4개 정답\n"+(wrong.join("\n")||"모두 맞았어요!")};
+/* 몸과 하드웨어 비교 */
+const organs=[
+ ["입력 장치","keyboard","눈·귀·피부가 주변 정보를 받아들이듯, 입력 장치는 외부 데이터를 받아요.","키보드·마우스·마이크·카메라·센서","예: 내가 누른 글쇠가 문자 데이터로 들어와요."],
+ ["처리 장치","cpu","뇌가 정보를 판단하고 행동을 결정하는 역할에 비유할 수 있어요. CPU는 프로그램의 명령에 따라 연산하고 동작을 제어해요.","CPU·GPU","GPU는 그래픽 등 많은 계산을 빠르게 처리하는 데 쓰여요."],
+ ["출력 장치","pc","입으로 말하거나 손으로 표현하듯, 처리 결과를 사람이 확인할 수 있는 형태로 나타내요.","모니터·스피커·프린터","사진 속 모니터는 결과를 화면으로 보여 주는 출력 장치예요."],
+ ["기억 장치","ram","뇌가 내용을 기억하는 역할에 비유할 수 있어요. 지금 작업할 내용과 오래 보관할 내용을 구분해 봐요.","RAM / SSD / HDD","RAM은 임시 작업 공간, SSD·HDD는 장기 보관 공간이에요. RAM·SSD·HDD 사진을 비교하거나 아래 버튼으로 확대해서 살펴봐요."],
+ ["통신 장치","network","다른 사람과 대화하며 정보를 주고받는 활동에 비유할 수 있어요. 다른 컴퓨팅 시스템과 데이터를 주고받게 해요.","유선 랜·무선 랜·블루투스 어댑터","사진은 USB에 연결하는 무선 랜 어댑터예요. 와이파이로 다른 시스템과 정보를 주고받도록 도와줘요."]
+];
+function showOrgan(i){const o=organs[i];if(i===3){$("#organPhoto").replaceChildren();const grid=document.createElement("div");grid.className="memory-photos";["ram","ssd","hdd"].forEach(k=>{const host=document.createElement("div");putPhoto(host,k);grid.append(host)});$("#organPhoto").append(grid)}else putPhoto($("#organPhoto"),o[1]);$("#organInfo").replaceChildren();[o[0],o[2],"장치 예: "+o[3],o[4]].forEach((s,j)=>{const e=document.createElement(j?"p":"h3");e.textContent=s;$("#organInfo").append(e)});$("#memoryButtons").hidden=i!==3;$$("[data-organ]").forEach(b=>b.setAttribute("aria-pressed",String(Number(b.dataset.organ)===i)))}
+$$("[data-organ]").forEach(b=>b.onclick=()=>showOrgan(Number(b.dataset.organ)));$$("[data-memory]").forEach(b=>b.onclick=()=>{const key=b.dataset.memory;putPhoto($("#organPhoto"),key);$("#organInfo").textContent=key==="ram"?"RAM · 실행 중인 프로그램과 데이터를 임시로 기억해요. 전원이 꺼지면 내용이 사라져요.":key==="hdd"?"HDD · 회전하는 자기 디스크와 헤드로 데이터를 읽고 써요. SSD처럼 전원이 꺼져도 저장 내용이 남아요.":"SSD · 프로그램과 파일을 장기간 보관해요. 사진은 덮개를 연 SSD의 내부 기판이에요. 전원이 꺼져도 기록이 남아요."});showOrgan(0);
+const cards=[["키보드","keyboard","입력"],["CPU","cpu","처리"],["RAM","ram","기억"],["SSD","ssd","기억"],["HDD","hdd","기억"],["사진 속 모니터","pc","출력"],["USB 무선 랜 어댑터","network","통신"],["스마트폰의 터치스크린","phone","입력·출력"]];
+let chosen=-1;const assignments=Array(cards.length).fill("");
+function renderCards(){const host=$("#gameCards"),old=host.querySelector('[aria-pressed="true"]');const focused=document.activeElement===old;host.replaceChildren();cards.forEach(([name,key],i)=>{const b=document.createElement("button"),s=document.createElement("span"),small=document.createElement("small");b.className="game-card";b.setAttribute("aria-pressed",String(i===chosen));b.setAttribute("aria-label",name+", "+(assignments[i]||"미분류"));const img=makeImage(key);img.alt="";s.append(document.createTextNode(name));small.textContent=assignments[i]?"분류: "+assignments[i]:"아직 분류하지 않음";s.append(small);b.append(img,s);b.onclick=()=>{chosen=i;renderCards();$("#gameResult").textContent=name+" 선택됨. 확대 창을 닫은 뒤 역할 버튼을 누르세요.";host.children[i].focus({preventScroll:true});openPhoto(key)};host.append(b);if(focused&&i===chosen)b.focus()})}
+["입력","처리","출력","기억","통신","입력·출력"].forEach(role=>{const b=document.createElement("button");b.className="btn";b.textContent=role;b.onclick=()=>{if(chosen<0){$("#gameResult").textContent="먼저 사진 카드를 선택하세요.";return}assignments[chosen]=role;renderCards();$("#gameResult").textContent=cards[chosen][0]+" → "+role+"로 분류했어요."};$("#gameBins").append(b)});
+$("#gradeGame").onclick=()=>{let n=0;const notes=[];cards.forEach((c,i)=>{if(assignments[i]===c[2])n++;else notes.push(c[0]+": "+(assignments[i]||"미분류")+" → 정답은 "+c[2])});$("#gameResult").className="feedback "+(n===cards.length?"good":"bad");$("#gameResult").textContent=n+" / "+cards.length+"개 정답\n"+(notes.join("\n")||"모두 맞았어요! 각 역할을 몸의 기능과 연결해서 말해 보세요.")};
+$("#resetGame").onclick=()=>{assignments.fill("");chosen=-1;renderCards();$("#gameResult").textContent="분류를 초기화했어요."};renderCards();
+/* 실제 키오스크처럼 조작하는 수업용 앱: 결제·서버 전송 없음 */
+const menu=[{name:"에그 샌드위치",price:4000,food:"🥪"},{name:"치즈 샌드위치",price:4500,food:"🧀"},{name:"오렌지 주스",price:2000,food:"🍊"},{name:"우유",price:1500,food:"🥛"}];
+let kioskStage="off",cart=[0,0,0,0],savedOrders=[],currentSaved=null,transmitted=false,orderSerial=0;
+const money=n=>n.toLocaleString("ko-KR")+"원";
+function cartTotal(){return cart.reduce((n,q,i)=>n+q*menu[i].price,0)}
+function cartText(){return menu.map((m,i)=>cart[i]?m.name+" "+cart[i]+"개":"").filter(Boolean).join(", ")||"선택한 메뉴 없음"}
+function actionButton(text,fn,primary=true){const b=document.createElement("button");b.className="btn"+(primary?" primary":"");b.textContent=text;b.onclick=fn;return b}
+function setKioskLog(title,text,device){const host=$("#kioskLog");host.replaceChildren();const b=document.createElement("b"),p=document.createElement("p");b.textContent=title;p.textContent=text;host.append(b,p);["Ram","Ssd","Network"].forEach(k=>$("#device"+k).classList.toggle("device-active",device===k))}
+function showStateLines(host,lines){host.replaceChildren();host.classList.add("state-list");lines.forEach(text=>{const line=document.createElement("span");line.className="state-line"+(text.startsWith("주문 #")?" heading":"");line.textContent=text;host.append(line)})}
+function renderKiosk(){
+ const host=$("#kioskUI");host.replaceChildren();
+ $("#powerOff").disabled=kioskStage==="off";
+ const ramLines=[];
+ if(kioskStage==="off")ramLines.push("비어 있음 · 전원이 꺼져 있어요");
+ else {
+  ramLines.push("실행 중: 운영체제");
+  if(kioskStage!=="boot"){
+   ramLines.push("실행 중: 주문 앱");
+   const hasItems=cart.some(q=>q>0);
+   if(hasItems){ramLines.push("작업 데이터: 현재 장바구니");menu.forEach((m,i)=>{if(cart[i])ramLines.push("• "+m.name+" × "+cart[i]+"개")});
+    if(["review","saved","done"].includes(kioskStage))ramLines.push("계산 결과: 합계 "+money(cartTotal()));
+   }else ramLines.push("작업 데이터: 아직 선택한 메뉴 없음");
+  }
+ }
+ showStateLines($("#ramState"),ramLines);
+ const ssdLines=["설치된 프로그램: 운영체제","설치된 프로그램: 주문 앱","저장된 주문: "+savedOrders.length+"건"];
+ savedOrders.forEach(record=>{
+  ssdLines.push("주문 #"+String(record.id).padStart(3,"0"));
+  record.items.forEach((q,i)=>{if(q)ssdLines.push("• "+menu[i].name+" × "+q+"개")});
+  ssdLines.push("합계: "+money(record.total));
+ });
+ showStateLines($("#ssdState"),ssdLines);
+ $("#networkState").textContent=transmitted?"현재 주문을 주방으로 전송한 상태(모형)":"현재 주문 전송 전";
+ if(kioskStage==="off"){
+  const h=document.createElement("h3");h.textContent="키오스크 전원이 꺼져 있어요";host.append(h,actionButton("전원 켜기 · 부팅",()=>{kioskStage="boot";renderKiosk()}));
+  setKioskLog("전원 꺼짐","RAM은 비어 있어요. SSD에 저장된 운영체제·앱·이전 주문은 남아 있어요.","Ssd");return;
+ }
+ if(kioskStage==="boot"){
+  const h=document.createElement("h3");h.textContent="환영합니다";const p=document.createElement("p");p.textContent="원하는 메뉴를 골라 주문해 보세요.";host.append(h,p,actionButton("화면을 눌러 주문 시작",()=>{kioskStage="menu";renderKiosk()}));
+  setKioskLog("부팅 · 시스템 소프트웨어","운영체제를 RAM에 불러와 실행했어요. 운영체제가 화면·CPU·기억 장치와 통신 장치를 관리해요.","Ram");return;
+ }
+ if(kioskStage==="menu"){
+  const title=document.createElement("h3");title.textContent="메뉴를 선택하세요";host.append(title);const grid=document.createElement("div");grid.className="menu-buttons";
+  menu.forEach((m,i)=>{const b=document.createElement("button");b.className="menu-item";const f=document.createElement("span"),name=document.createElement("span"),price=document.createElement("small");f.className="food";f.textContent=m.food;f.setAttribute("aria-hidden","true");name.textContent=m.name;price.textContent=money(m.price);b.append(f,name,price);b.onclick=()=>{if(cart[i]>=9){$("#simNotice").textContent="각 메뉴는 최대 9개까지 선택해요.";return}cart[i]++;renderKiosk();setKioskLog("입력 · 터치스크린","누른 메뉴와 수량 데이터를 주문 앱이 RAM에서 관리해요.","Ram")};grid.append(b)});host.append(grid);
+  const h=document.createElement("h3");h.textContent="내 장바구니";host.append(h);
+  let any=false;menu.forEach((m,i)=>{if(!cart[i])return;any=true;const row=document.createElement("div"),span=document.createElement("span"),minus=actionButton("−",()=>{cart[i]--;renderKiosk()},false);row.className="cart-row";span.textContent=m.name+" × "+cart[i];minus.setAttribute("aria-label",m.name+" 수량 줄이기");row.append(span,minus);host.append(row)});
+  if(!any){const p=document.createElement("p");p.textContent="메뉴를 누르면 여기에 담겨요.";host.append(p)}
+  const b=actionButton("주문 확인 · 금액 계산",()=>{kioskStage="review";renderKiosk()});b.disabled=!any;host.append(b);
+  setKioskLog("응용 소프트웨어 · 주문 앱","주문 앱이 RAM에 올라와 실행 중이에요. 화면의 메뉴를 눌러 데이터를 입력하세요.","Ram");return;
+ }
+ const sum=document.createElement("div");sum.className="kiosk-total";sum.textContent="합계 "+money(cartTotal());
+ if(kioskStage==="review"){
+  const h=document.createElement("h3"),p=document.createElement("p");h.textContent="주문 내용을 확인하세요";p.textContent=cartText();host.append(h,p,sum,actionButton("주문 확정 · SSD에 저장",()=>{currentSaved={id:++orderSerial,items:[...cart],total:cartTotal()};savedOrders.push(currentSaved);kioskStage="saved";renderKiosk()}),actionButton("메뉴 수정",()=>{kioskStage="menu";renderKiosk()},false));
+  setKioskLog("처리: CPU → 출력: 화면","CPU가 주문 앱의 명령에 따라 각 가격 × 수량을 계산하고 합산했어요. 결과는 화면에 출력됐지만 아직 주문 기록은 SSD에 저장하지 않았어요.","Ram");return;
+ }
+ if(kioskStage==="saved"){
+  const h=document.createElement("h3"),p=document.createElement("p");h.textContent="주문이 저장됐어요";p.textContent="주문 번호 "+String(currentSaved.id).padStart(3,"0")+" · "+cartText();host.append(h,p,sum,actionButton("주방에 주문 보내기",()=>{transmitted=true;kioskStage="done";renderKiosk()}));setKioskLog("기억 · 보조 기억 장치 SSD","운영체제의 관리를 받아 주문 내용을 SSD에 기록했어요. 이제 전원을 꺼도 저장한 주문은 남아요.","Ssd");return;
+ }
+ const receipt=document.createElement("div");receipt.className="receipt";const h=document.createElement("h3"),p=document.createElement("p"),n=document.createElement("h2");h.textContent="주문 완료 · 가상 영수증";n.textContent="주문 번호 "+String(currentSaved.id).padStart(3,"0");p.textContent=cartText();receipt.append(h,n,p,sum);host.append(receipt,actionButton("다음 손님 · 새 주문",()=>{cart=[0,0,0,0];currentSaved=null;transmitted=false;kioskStage="menu";renderKiosk()}));setKioskLog("통신: 무선 랜 어댑터 / 출력: 영수증 화면","다른 컴퓨팅 시스템인 주방에 주문 정보를 전송한 상태예요. 실제 전송이나 결제는 하지 않아요. 영수증은 이 화면에 표시해요.","Network");
+}
+$("#powerOff").onclick=()=>{const kept=!!currentSaved;kioskStage="off";cart=[0,0,0,0];currentSaved=null;transmitted=false;renderKiosk();$("#simNotice").textContent=kept?"RAM은 비었지만 SSD에 저장한 주문은 남았어요. 다시 켜서 기록 수를 확인하세요.":"저장하지 않은 장바구니는 사라졌어요. 이전에 SSD에 저장한 주문은 남아 있어요."};
+$("#resetSim").onclick=()=>{kioskStage="off";cart=[0,0,0,0];savedOrders=[];currentSaved=null;transmitted=false;orderSerial=0;renderKiosk();$("#simNotice").textContent="키오스크 실험 기록만 초기화했어요. 활동지 답안은 유지돼요."};renderKiosk();
+/* 활동지 구성 */
+const specs=[["device","기기 종류·모델","예: 노트북 / 확인한 모델명"],["cpuSpec","처리 장치","CPU 또는 칩 이름"],["ramSpec","주기억 장치","RAM 용량과 단위"],["diskSpec","보조 기억 장치","SSD·HDD 종류와 용량"],["osSpec","시스템 소프트웨어","운영체제 이름과 버전"],["appSpec","응용 소프트웨어·용도","예: 웹 브라우저 — 검색"]];
+const processFields=[["system","선택한 시스템","스마트워치·도서 대출기·키오스크 등"],["problem","해결하려는 문제","누구의 어떤 불편을 해결하나요?"],["aInput","입력","어떤 장치로 어떤 데이터를 받나요?"],["aProcess","처리","입력된 데이터를 어떻게 계산·분석하나요?"],["aStore","저장","어떤 내용을 어디에 보관하나요?"],["aOutput","출력","어떤 장치로 어떤 결과를 보여 주나요?"],["aNetwork","통신과 소프트웨어의 역할","다른 시스템과 주고받는 정보는? 운영체제와 앱의 역할은? 통신이 필요 없다면 이유를 써요."]];
+const newFields=[["newSystem","새 시스템의 이름과 해결할 문제","학교·집·지역의 불편을 생각해요."],["newHardware","필요한 하드웨어와 역할","장치 이름과 입력·처리·출력 등의 역할을 연결해요."],["newSoftware","필요한 소프트웨어 기능","어떤 데이터를 처리해서 어떤 동작을 해야 하나요?"],["discussion","친구와 토론한 뒤 보완한 점","친구의 질문·제안과 반영한 내용을 써요."]];
+function addFields(host,rows,input=false){rows.forEach(([id,title,placeholder])=>{const d=document.createElement("div"),l=document.createElement("label"),f=document.createElement(input?"input":"textarea");d.className="field";l.htmlFor=id;l.textContent=title;f.id=id;f.placeholder=placeholder;f.setAttribute("data-save","");d.append(l,f);host.append(d)})}
+addFields($("#specFields"),specs,true);addFields($("#processFields"),processFields);addFields($("#newFields"),newFields);
+const KEY="computing-system-lesson-v1",fields=$$("[data-save]");let storageOK=true;
+try{const data=JSON.parse(localStorage.getItem(KEY)||"{}")||{};const oldIds={cpuSpec:"cpu",ramSpec:"ram",diskSpec:"disk",osSpec:"os",appSpec:"app"};Object.entries(oldIds).forEach(([now,old])=>{if(data[now]===undefined&&typeof data[old]==="string")data[now]=data[old]});fields.forEach(f=>{if(f.type==="checkbox")f.checked=data?.[f.id]===true;else if(typeof data?.[f.id]==="string")f.value=data[f.id]})}catch(e){storageOK=false}
+function save(){const data={};fields.forEach(f=>data[f.id]=f.type==="checkbox"?f.checked:f.value);try{localStorage.setItem(KEY,JSON.stringify(data));storageOK=true}catch(e){storageOK=false}}
+fields.forEach(f=>f.addEventListener("input",save));
+function workMessage(text){$("#workMessage").textContent=text}
+/* GitHub Pages → Apps Script → Google Sheets */
+const SUBMISSION_CONFIG={
+  endpoint:"여기에_배포된_Apps_Script_웹앱_exec_주소를_입력",
+  lessonId:"computing-system-01"
+};
+function randomHex(bytes){const a=new Uint8Array(bytes);crypto.getRandomValues(a);return Array.from(a,b=>b.toString(16).padStart(2,"0")).join("")}
+function currentSubmission(){const answers={};fields.forEach(f=>{if(!["studentId","studentName"].includes(f.id))answers[f.id]=f.type==="checkbox"?f.checked:f.value});return {lessonId:SUBMISSION_CONFIG.lessonId,studentId:$("#studentId").value.trim(),studentName:$("#studentName").value.trim(),answers};}
+function receiptRequest(endpoint,id,token){return new Promise((resolve,reject)=>{
+ const callback="lessonReceipt_"+randomHex(12),script=document.createElement("script");let timer;
+ function cleanup(){clearTimeout(timer);script.remove();delete window[callback]}
+ window[callback]=result=>{cleanup();resolve(result)};
+ script.onerror=()=>{cleanup();reject(new Error("저장 결과 확인 연결이 지연되고 있어요."))};
+ timer=setTimeout(()=>{cleanup();reject(new Error("확인 응답 대기 시간 초과"))},18000);
+ const url=new URL(endpoint);url.searchParams.set("action","receipt");url.searchParams.set("requestId",id);url.searchParams.set("receiptToken",token);url.searchParams.set("callback",callback);url.searchParams.set("t",Date.now());script.src=url.href;document.head.append(script);
+})}
+function postSubmission(endpoint,payload){
+ const name="lessonPost_"+randomHex(8),frame=document.createElement("iframe"),form=document.createElement("form"),input=document.createElement("input");
+ frame.name=name;frame.title="수업 제출 전송";frame.hidden=true;
+ form.method="POST";form.action=endpoint;form.target=name;form.hidden=true;
+ input.type="hidden";input.name="payload";input.value=JSON.stringify(payload);form.append(input);document.body.append(frame,form);form.submit();form.remove();
+ return ()=>frame.remove();
+}
+$("#submitWork").onclick=async()=>{
+ save();const payload=currentSubmission(),endpoint=SUBMISSION_CONFIG.endpoint;
+ if(!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(endpoint)){workMessage("선생님이 HTML의 SUBMISSION_CONFIG.endpoint에 배포된 웹앱 /exec 주소를 먼저 설정해야 해요.");return}
+ if(!/^\d{4,12}$/.test(payload.studentId)){workMessage("학번은 숫자 4~12자리로 입력해 주세요.");$("#studentId").focus();return}
+ if(!payload.studentName){workMessage("이름을 입력해 주세요.");$("#studentName").focus();return}
+ if(!globalThis.crypto?.getRandomValues){workMessage("보안 난수를 사용할 수 없습니다. 최신 브라우저의 GitHub Pages HTTPS 주소에서 열어 주세요.");return}
+ const fingerprint=JSON.stringify(payload),pendingKey=KEY+":pending";let pending;
+ try{pending=JSON.parse(localStorage.getItem(pendingKey)||"null")}catch(e){}
+ if(!pending || pending.fingerprint!==fingerprint || !/^[a-f0-9]{64}$/.test(pending.receiptToken||"")) pending={fingerprint,requestId:randomHex(16),receiptToken:randomHex(32)};
+ payload.requestId=pending.requestId;payload.receiptToken=pending.receiptToken;
+ try{localStorage.setItem(pendingKey,JSON.stringify(pending))}catch(e){}
+ const button=$("#submitWork");button.disabled=true;button.textContent="저장 확인 중…";workMessage("서버에서 실제 저장 결과를 확인하고 있어요. 잠시 기다려 주세요.");
+ let cleanup=()=>{};
+ try{
+  cleanup=postSubmission(endpoint,payload);
+  const deadline=Date.now()+120000;let result=null;
+  while(Date.now()<deadline){
+   await new Promise(r=>setTimeout(r,3000));
+   try{const receipt=await receiptRequest(endpoint,payload.requestId,payload.receiptToken);if(receipt.state==="done"){result=receipt;break}}catch(e){}
+  }
+  if(!result)throw new Error("저장 결과를 확인하지 못했어요. 이미 저장되었을 수도 있으므로 같은 내용으로 다시 제출해 확인하세요. 계속되면 선생님이 배포 접근 권한과 실행 기록을 확인해야 해요.");
+  if(!result.ok)throw new Error(result.message||"서버가 저장 실패를 알려 왔어요.");
+  try{localStorage.removeItem(pendingKey)}catch(e){}
+  workMessage("제출 완료 · "+result.sheetName+" · "+result.savedAt+" · "+result.message);
+  button.textContent="수정 내용 다시 제출";
+ }catch(error){workMessage(error.message||"제출 결과를 확인하지 못했어요. 다시 제출해 주세요.");button.textContent="다시 제출 / 결과 확인"}
+ finally{cleanup();button.disabled=false}
+};
+$("#clearWork").onclick=()=>{if(!confirm("학번·이름과 이 수업의 작성 답안을 이 브라우저에서 지울까요? 다른 사이트의 기록은 지워지지 않아요."))return;try{localStorage.removeItem(KEY)}catch(e){workMessage("브라우저 저장 기록 삭제가 제한되었어요. 브라우저의 사이트 데이터 설정을 확인해 주세요.");return}fields.forEach(f=>{if(f.type==="checkbox")f.checked=false;else f.value=""});workMessage("이 수업의 학번·이름·답안을 지웠어요. 다른 사이트의 기록은 변경하지 않았어요.")};
+</script>
+</body>
+</html>
