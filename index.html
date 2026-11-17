@@ -54,7 +54,7 @@ figure{margin:0}.photo{margin-bottom:9px}.photo button{display:block;position:re
 </head>
 <body>
 <header>
-  <div><h1>컴퓨팅 시스템의 구성과 동작</h1><p>중학교 정보 · 사진으로 탐색하고, 직접 움직이며 이해하기</p></div>
+  <div><h1>1.1.컴퓨팅 시스템의 구성과 동작</h1><p>중학교 정보 · 사진으로 탐색하고, 직접 움직이며 이해하기</p></div>
   <div class="identity" aria-label="학생 정보">
     <label for="studentId">학번<input id="studentId" data-save placeholder="예: 10101" maxlength="20" autocomplete="off"></label>
     <label for="studentName">이름<input id="studentName" data-save placeholder="이름" maxlength="30" autocomplete="off"></label>
@@ -67,7 +67,15 @@ figure{margin:0}.photo{margin-bottom:9px}.photo button{display:block;position:re
   <button class="tab" id="tab-operation" role="tab" aria-controls="operation" aria-selected="false" tabindex="-1" data-tab="operation">3. 주문 처리 실험</button>
   <button class="tab" id="tab-activity" role="tab" aria-controls="activity" aria-selected="false" tabindex="-1" data-tab="activity">활동 1 · 활동지</button>
 </nav>
-<main>
+<main id="teacherPage" hidden>
+<section><span class="tag">교사용 · 제출 서버 연결 설정</span><h2>1.1.컴퓨팅 시스템의 구성과 동작</h2>
+<p>Apps Script 주소를 설정하고 <b>submission-config.json</b> 파일을 내려받아 수업 HTML과 같은 GitHub 폴더에 올려 주세요. 학생 화면은 이 파일에서 주소를 읽어요.</p>
+<div class="note">이 화면은 비밀번호로 보호된 관리자 페이지가 아니라 공개 연결 설정 도구예요. 설정 파일에는 공개 웹앱 주소만 들어가며 비밀번호나 API 키는 넣지 않아요. 설정 저장만으로 GitHub 파일이나 다른 학생의 브라우저 설정이 바뀌지는 않아요.</div>
+<label for="teacherEndpoint">Apps Script 웹앱 주소 (/exec)</label><input id="teacherEndpoint" type="url" placeholder="https://script.google.com/macros/s/배포ID/exec" autocomplete="off">
+<div class="actions"><button class="btn primary" id="downloadConfig">공통 설정 파일 내려받기</button><button class="btn" id="previewConfig">이 브라우저에서 임시 적용</button><button class="btn" id="clearPreview">임시 설정 해제</button><a class="btn" href="?">학생 화면으로</a></div>
+<p id="teacherMessage" role="status"></p><h3>주소를 변경할 때</h3><ol><li>새 /exec 주소를 입력해요.</li><li>공통 설정 파일을 내려받아요.</li><li>GitHub의 기존 submission-config.json을 새 파일로 교체해요.</li><li>GitHub Pages 배포 완료 후 학생이 페이지를 새로고침해요.</li></ol>
+<p class="muted">기존 배포를 ‘새 버전’으로 업데이트하면 일반적으로 주소가 유지되어 설정을 바꿀 필요가 없어요. 새 배포로 주소가 달라졌을 때 수정하면 돼요. 임시 적용은 이 기기·브라우저에만 적용돼요.</p></section></main>
+<main id="studentPage">
 <div class="pane" id="intro" role="tabpanel" aria-labelledby="tab-intro">
 <section>
   <span class="tag">교과서 12~13쪽 · 생각 열기</span><h2>방을 채우던 컴퓨터가 손목 위로!</h2>
@@ -122,7 +130,7 @@ figure{margin:0}.photo{margin-bottom:9px}.photo button{display:block;position:re
 <section><h3>3. 새롭게 등장하면 좋을 시스템</h3><div id="newFields"></div><div class="checklist"><label><input type="checkbox" id="check1" data-save>하드웨어와 소프트웨어를 구별했어요.</label><label><input type="checkbox" id="check2" data-save>입력·처리·저장·출력과 장치를 연결했어요.</label><label><input type="checkbox" id="check3" data-save>새 시스템의 장치와 소프트웨어 기능을 설명했어요.</label></div><div class="no-print"><div class="actions"><button class="btn primary" id="submitWork">선생님께 제출하기</button><button class="btn" id="clearWork">이 수업의 기기 내 기록 지우기</button></div><p class="muted">제출 후 같은 학번으로 다시 제출하면 기존 내용이 수정돼요. 다른 수업의 기록은 별도 탭에 저장돼요. 공용 기기는 제출 성공을 확인한 뒤 이 수업의 기기 내 기록을 지워 주세요.</p><div class="feedback" id="workMessage" role="status"></div></div></section>
 </div>
 </main>
-<footer>내용: 첨부 교과서 12~19쪽을 수업용으로 재구성. 사진·화면: Wikimedia Commons(CC0·CC BY-SA, ENIAC은 퍼블릭 도메인, LibreOffice 화면은 GPL / MPL 2.0). 사진마다 원본·출처 링크 제공. 외부 사진을 보려면 인터넷이 필요하며, 차단된 환경에서도 설명과 활동은 사용할 수 있어요.</footer>
+<footer><a href="?teacher=1">교사용 설정</a><br>내용: 첨부 교과서 12~19쪽을 수업용으로 재구성. 사진·화면: Wikimedia Commons(CC0·CC BY-SA, ENIAC은 퍼블릭 도메인, LibreOffice 화면은 GPL / MPL 2.0). 사진마다 원본·출처 링크 제공. 외부 사진을 보려면 인터넷이 필요하며, 차단된 환경에서도 설명과 활동은 사용할 수 있어요.</footer>
 <dialog id="photoDialog" aria-labelledby="photoTitle"><div class="actions"><h2 id="photoTitle">사진 보기</h2><button class="btn" id="closePhoto">닫기</button></div><img id="largePhoto" alt=""><p id="photoCredit"></p><a id="photoSource" target="_blank" rel="noopener noreferrer">사진 원본·이용 조건 보기</a></dialog>
 <script>
 "use strict";
@@ -256,10 +264,35 @@ function save(){const data={};fields.forEach(f=>data[f.id]=f.type==="checkbox"?f
 fields.forEach(f=>f.addEventListener("input",save));
 function workMessage(text){$("#workMessage").textContent=text}
 /* GitHub Pages → Apps Script → Google Sheets */
-const SUBMISSION_CONFIG={
-  endpoint:"여기에_배포된_Apps_Script_웹앱_exec_주소를_입력",
-  lessonId:"computing-system-01"
+const SUBMISSION_CONFIG={endpoint:"",lessonId:"computing-system-01"};
+const ENDPOINT_OVERRIDE_KEY="lesson-submission-endpoint-preview-v1";
+function isEndpoint(value){return /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(value)}
+async function loadSubmissionConfig(){
+ let endpoint="",status="";
+ try{
+  const url=new URL("submission-config.json",location.href);url.searchParams.set("_",Date.now());
+  const response=await fetch(url,{cache:"no-store",credentials:"same-origin"});
+  if(!response.ok)throw new Error("설정 파일 없음");
+  const config=await response.json();
+  if(isEndpoint(config.endpoint)){endpoint=config.endpoint;status="GitHub 공통 설정을 불러왔어요."}else status="공통 설정에 유효한 /exec 주소를 입력해 주세요.";
+ }catch(error){status="공통 설정 파일을 읽지 못했어요. 수업 HTML과 같은 폴더의 submission-config.json을 확인해 주세요."}
+ try{const preview=localStorage.getItem(ENDPOINT_OVERRIDE_KEY);if(isEndpoint(preview)){endpoint=preview;status="이 브라우저의 임시 설정이 적용돼 있어요. 학생 전체에는 적용되지 않아요."}}catch(error){}
+ SUBMISSION_CONFIG.endpoint=endpoint;
+ $("#teacherEndpoint").value=endpoint;$("#teacherMessage").textContent=status;
+ return endpoint;
+}
+const configReady=loadSubmissionConfig();
+if(new URLSearchParams(location.search).get("teacher")==="1"){
+ $("#teacherPage").hidden=false;$("#studentPage").hidden=true;$("nav").hidden=true;$(".identity").hidden=true;
+}
+$("#downloadConfig").onclick=()=>{
+ const endpoint=$("#teacherEndpoint").value.trim();if(!isEndpoint(endpoint)){$("#teacherMessage").textContent="올바른 Apps Script /exec 주소를 입력해 주세요.";return}
+ const blob=new Blob([JSON.stringify({version:1,endpoint},null,2)+"\n"],{type:"application/json"}),url=URL.createObjectURL(blob),link=document.createElement("a");
+ link.href=url;link.download="submission-config.json";document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+ $("#teacherMessage").textContent="파일을 내려받았어요. GitHub의 같은 폴더에 업로드해야 학생 전체에 적용돼요.";
 };
+$("#previewConfig").onclick=()=>{const endpoint=$("#teacherEndpoint").value.trim();if(!isEndpoint(endpoint)){$("#teacherMessage").textContent="올바른 /exec 주소를 입력해 주세요.";return}try{localStorage.setItem(ENDPOINT_OVERRIDE_KEY,endpoint);SUBMISSION_CONFIG.endpoint=endpoint;$("#teacherMessage").textContent="이 브라우저에만 임시 적용했어요. 학생 전체 적용은 설정 파일을 GitHub에 올려 주세요."}catch(error){$("#teacherMessage").textContent="이 브라우저는 설정 저장을 제한하고 있어요. 공통 설정 파일을 사용해 주세요."}};
+$("#clearPreview").onclick=async()=>{try{localStorage.removeItem(ENDPOINT_OVERRIDE_KEY)}catch(error){}await loadSubmissionConfig()};
 function randomHex(bytes){const a=new Uint8Array(bytes);crypto.getRandomValues(a);return Array.from(a,b=>b.toString(16).padStart(2,"0")).join("")}
 function currentSubmission(){const answers={};fields.forEach(f=>{if(!["studentId","studentName"].includes(f.id))answers[f.id]=f.type==="checkbox"?f.checked:f.value});return {lessonId:SUBMISSION_CONFIG.lessonId,studentId:$("#studentId").value.trim(),studentName:$("#studentName").value.trim(),answers};}
 function receiptRequest(endpoint,id,token){return new Promise((resolve,reject)=>{
@@ -278,8 +311,8 @@ function postSubmission(endpoint,payload){
  return ()=>frame.remove();
 }
 $("#submitWork").onclick=async()=>{
- save();const payload=currentSubmission(),endpoint=SUBMISSION_CONFIG.endpoint;
- if(!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(endpoint)){workMessage("선생님이 HTML의 SUBMISSION_CONFIG.endpoint에 배포된 웹앱 /exec 주소를 먼저 설정해야 해요.");return}
+ save();await configReady;const payload=currentSubmission(),endpoint=SUBMISSION_CONFIG.endpoint;
+ if(!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(endpoint)){workMessage("제출 서버가 연결되지 않았어요. 선생님이 교사용 설정에서 주소를 설정하고 공통 설정 파일을 업로드해야 해요.");return}
  if(!/^\d{4,12}$/.test(payload.studentId)){workMessage("학번은 숫자 4~12자리로 입력해 주세요.");$("#studentId").focus();return}
  if(!payload.studentName){workMessage("이름을 입력해 주세요.");$("#studentName").focus();return}
  if(!globalThis.crypto?.getRandomValues){workMessage("보안 난수를 사용할 수 없습니다. 최신 브라우저의 GitHub Pages HTTPS 주소에서 열어 주세요.");return}
